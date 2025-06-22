@@ -14,7 +14,7 @@ file_categories: Dict[str, List[str]] = {
     "Pictures": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".webp"],
     "Audio": [".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a"],
     "Videos": [".mp4", ".avi", ".mkv", ".mov", ".webm"],
-    "Compressed": [".zip", ".tar", ".gz", ".rar", ".7z", ".bz2",".tar.xz",".jar"],
+    "Compressed": [".zip", ".tar", ".gz", ".rar", ".7z", ".bz2", ".tar.xz", ".jar"],
     "Programs": [".deb", ".AppImage", ".exe", ".msi", ".sh", ".bat"],
     "Code": [".py", ".js", ".html", ".css", ".cpp", ".c", ".java"],
     "Torrent": [".torrent"],
@@ -29,15 +29,21 @@ def categorize_file(file_path: Path):
             return category
     return "Others"
 
-
-def log_action(item_name: str, destination: Path):
+def log_move(item_name: str, destination: Path):
     time_str = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     with open(log_file_path, "a") as log:
         log.write(f"[{time_str}] Moved '{item_name}' to '{destination}'\n")
 
+def log_action(message: str):
+    with open(log_file_path, "a") as log:
+        log.write(message + '\n')
 
 def organize_downloads_folder(dry_run: bool = True):
     destination_folders = set(file_categories) | {"Folders"}
+    files_moved = 0
+    folders_moved = 0
+    time_str = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+    log_action(f"\n--- Organizer Run Started at {time_str} ---")
 
     for item in download_path.iterdir():
         if item.name.startswith(".") or item.name == log_file_path.name:
@@ -54,8 +60,9 @@ def organize_downloads_folder(dry_run: bool = True):
             else:
                 try:
                     shutil.move(str(item), str(destination))
-                    print(f" Moved: {item.name} to Folder {category}/")
-                    log_action(item.name, category_path)
+                    files_moved += 1
+                    print(f"Moved: {item.name} to Folder {category}/")
+                    log_move(item.name, category_path)
                 except Exception as e:
                     print(f"Could not move {item.name}: {e}")
 
@@ -68,10 +75,16 @@ def organize_downloads_folder(dry_run: bool = True):
             else:
                 try:
                     shutil.move(str(item), str(destination))
+                    folders_moved += 1
                     print(f"Moved Folder: {item.name} to Folders/")
-                    log_action(item.name, folder_target_path)
+                    log_move(item.name, folder_target_path)
                 except Exception as e:
-                    print(f"Could not move folder {item.name}:{e}")
+                    print(f"Could not move folder {item.name}: {e}")
+
+    if not dry_run:
+        summary = f"Summary: {files_moved} files moved, {folders_moved} folders moved."
+        print(summary)
+        log_action(summary)
 
 
 if __name__ == "__main__":
