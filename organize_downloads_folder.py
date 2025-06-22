@@ -24,9 +24,13 @@ file_categories: Dict[str, List[str]] = {
 
 def categorize_file(file_path: Path):
     ext = file_path.suffix.lower()
-    for category, extension in file_categories.items():
-        if ext in extension:
-            return category
+    if ext:
+        for category, extension in file_categories.items():
+            if ext in extension:
+                return category
+    # Check for extensionless executable
+    if file_path.is_file() and os.access(file_path, os.X_OK):
+        return "Programs"
     return "Others"
 
 def log_move(item_name: str, destination: Path):
