@@ -9,15 +9,16 @@ log_file_path: Path = download_path / "download_organizer.log"
 folder_target_path: Path = download_path / "Folders"
 
 file_categories: Dict[str, List[str]] = {
-     "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".webp"],
-    "Documents": [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".odt",".md",".ott"],
-    "Archives": [".zip", ".tar", ".gz", ".rar", ".7z", ".bz2",".tar.xz",".jar"],
+    "Documents": [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".odt", ".ott"],
+    "Text Files": [".txt", ".log", ".ini", ".conf", ".csv", ".json", ".xml", ".yml", ".yaml", ".rmf", ".md"],
+    "Pictures": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".webp"],
     "Audio": [".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a"],
     "Videos": [".mp4", ".avi", ".mkv", ".mov", ".webm"],
-    "Programs": [".deb", ".AppImage", ".exe", ".msi", ".sh"],
-    "Code": [".py", ".js", ".html", ".css", ".cpp", ".c", ".java", ".json", ".xml"],
+    "Compressed": [".zip", ".tar", ".gz", ".rar", ".7z", ".bz2",".tar.xz",".jar"],
+    "Programs": [".deb", ".AppImage", ".exe", ".msi", ".sh", ".bat"],
+    "Code": [".py", ".js", ".html", ".css", ".cpp", ".c", ".java"],
     "Torrent": [".torrent"],
-    "Patch Files": [".bps"],
+    "Patch Files": [".bps", ".ups"],
     "Others": []
 }
 
