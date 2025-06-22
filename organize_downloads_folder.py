@@ -36,7 +36,7 @@ def log_action(item_name: str, destination: Path):
         log.write(f"[{time_str}] Moved '{item_name}' to '{destination}'\n")
 
 
-def organinize_downloads_folder(dry_run: bool = True):
+def organize_downloads_folder(dry_run: bool = True):
     destination_folders = set(file_categories) | {"Folders"}
 
     for item in download_path.iterdir():
@@ -84,4 +84,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    organinize_downloads_folder(dry_run=args.dry_run)
+    organize_downloads_folder(dry_run=args.dry_run)
